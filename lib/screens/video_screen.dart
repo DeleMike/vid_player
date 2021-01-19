@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 
 ///[VideoScreen] this will display the video
@@ -18,15 +19,19 @@ class _VideoScreenState extends State<VideoScreen> {
   void _initVideo() async {
     final video = await _videoFile;
     _controller = VideoPlayerController.file(video)
-      //play video again when it ends
       ..setLooping(true)
-      // initialize the controller and notify UI when done
-      ..initialize().then(
-        (_) => setState(() {
-          initialized = true;
-        }),
-      )
+      ..initialize()
+      ..addListener(() => setState(() {}))
       ..play();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
   }
 
   @override
@@ -39,14 +44,32 @@ class _VideoScreenState extends State<VideoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
-      body: initialized
+      body: _controller.value.initialized
           ? Scaffold(
-              body: Center(
-                child: AspectRatio(
-                  aspectRatio: _controller.value.aspectRatio,
-                  child: VideoPlayer(_controller),
-                ),
+              body: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    flex: deviceSize.height.isInfinite ? 2: 3,
+                    child: AspectRatio(
+                      aspectRatio: _controller.value.aspectRatio,
+                      child: VideoPlayer(_controller),
+                    ),
+                  ),
+                  Flexible(
+                    child: Text(
+                        '${_controller.value.position} / ${_controller.value.duration}'),
+                  ),
+                  Flexible(
+                    child: VideoProgressIndicator(
+                      _controller,
+                      allowScrubbing: true,
+                      padding: const EdgeInsets.all(10.0),
+                    ),
+                  ),
+                ],
               ),
               floatingActionButton: FloatingActionButton(
                 onPressed: () {
@@ -76,5 +99,13 @@ class _VideoScreenState extends State<VideoScreen> {
     if (_controller != null) {
       _controller.dispose();
     }
+
+    //reset app's orientation
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
   }
 }
