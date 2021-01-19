@@ -17,6 +17,7 @@ class VideoManager with ChangeNotifier{
     return [..._modelVideos];
   }
 
+  ///[fetchMedia] used to get video data from local device
   Future<void> fetchMedia() async {
     var result = await PhotoManager.requestPermission();
     if (result) {
