@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+import '../screens/video_screen.dart';
 import '../models/video.dart';
 
 ///[AllVideosGrid] displays all videos on device
@@ -27,21 +28,24 @@ class AllVideosGrid extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.done) {
               return Stack(
                 children: [
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    elevation: 5.0,
-                    child: Container(
-                      height: deviceSize.height * 0.25,
-                      width: deviceSize.width * 0.45,
-                      child: ClipRRect(
+                  InkWell(
+                    splashColor: Theme.of(context).canvasColor,
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: () {
+                      Navigator.of(context).pushNamed(VideoScreen.routeName,
+                          arguments: videoList[index].videoData);
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
-                        child: GridTile(
-                          child: InkWell(
-                            splashColor: Theme.of(context).canvasColor,
-                            borderRadius: BorderRadius.circular(12),
-                            onTap: () {},
+                      ),
+                      elevation: 5.0,
+                      child: Container(
+                        height: deviceSize.height * 0.25,
+                        width: deviceSize.width * 0.45,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: GridTile(
                             child:
                                 Image.memory(snapshot.data, fit: BoxFit.cover),
                           ),
@@ -74,15 +78,13 @@ class AllVideosGrid extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   Positioned(
                     top: 1,
                     left: 1,
-                    child:Container(
+                    child: Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 1, horizontal: 8),
-                      margin:
-                          const EdgeInsets.only(left: 8, top: 8),
+                      margin: const EdgeInsets.only(left: 8, top: 8),
                       width: deviceSize.width * 0.3,
                       child: Text(
                         '${videoList[index].videoDuration}',
