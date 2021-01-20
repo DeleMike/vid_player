@@ -57,6 +57,9 @@ class _VideoScreenState extends State<VideoScreen> {
                       handleRadius: 5.3,
                     ),
                   ),
+                  playerLoadingFallback: SpinKitPulse(
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
             )
