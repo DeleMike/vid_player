@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 
@@ -31,15 +30,6 @@ class _VideoScreenState extends State<VideoScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.landscapeRight,
-    //   DeviceOrientation.landscapeLeft,
-    // ]);
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _videoFile = ModalRoute.of(context).settings.arguments as Future<File>;
@@ -54,11 +44,20 @@ class _VideoScreenState extends State<VideoScreen> {
       body: _controller.value.initialized
           ? Container(
               child: FlickVideoPlayer(
-                  flickManager: _flickManager,
-                  preferredDeviceOrientation: [
-                    DeviceOrientation.landscapeRight,
-                    DeviceOrientation.landscapeLeft,
-                  ]),
+                flickManager: _flickManager,
+                flickVideoWithControls: FlickVideoWithControls(
+                  videoFit: BoxFit.contain,
+                  controls: FlickPortraitControls(
+                    iconSize: 25,
+                    fontSize: 14,
+                    progressBarSettings: FlickProgressBarSettings(
+                      playedColor: Colors.orange,
+                      height: 5,
+                      handleRadius: 5.3,
+                    ),
+                  ),
+                ),
+              ),
             )
           : Center(child: CircularProgressIndicator()),
     );
@@ -67,20 +66,9 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   void dispose() {
     super.dispose();
-    if (_controller != null) {
-      _controller.dispose();
-    }
 
     if (_flickManager != null) {
       _flickManager.dispose();
     }
-
-    //reset app's orientation
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.landscapeRight,
-    //   DeviceOrientation.landscapeLeft,
-    //   DeviceOrientation.portraitUp,
-    //   DeviceOrientation.portraitDown,
-    // ]);
   }
 }
