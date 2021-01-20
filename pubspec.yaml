@@ -13,11 +13,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flick_video_player: ^0.1.1
   photo_manager: ^0.5.8
   provider: ^4.3.2+4
   settings_ui: ^0.5.0
   shared_preferences: ^0.5.12+4
   cupertino_icons: ^1.0.0
+  video_player: ^0.10.8+1
 
 dev_dependencies:
   flutter_test:
