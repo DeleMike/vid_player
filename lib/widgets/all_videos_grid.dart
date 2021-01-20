@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../screens/video_screen.dart';
 import '../models/video.dart';
@@ -127,7 +128,20 @@ class AllVideosGrid extends StatelessWidget {
                 ],
               );
             } else {
-              return Center(child: CircularProgressIndicator());
+              return Container(
+                child: Center(
+                  child: Shimmer.fromColors(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black26,
+                      ),
+                    ),
+                    baseColor: Theme.of(context).primaryColor,
+                    highlightColor: Theme.of(context).canvasColor,
+                ),
+                  ),
+                
+              );
             }
           },
         );
