@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flick_video_player/flick_video_player.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 ///[VideoScreen] this will display the video
 class VideoScreen extends StatefulWidget {
@@ -59,7 +60,9 @@ class _VideoScreenState extends State<VideoScreen> {
                 ),
               ),
             )
-          : Center(child: CircularProgressIndicator()),
+          : SpinKitPulse(
+            color: Theme.of(context).primaryColor,
+          ),
     );
   }
 
