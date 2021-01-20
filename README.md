@@ -1,4 +1,4 @@
-# vid_player
+# Video Player
 
 A simple video player.
 
