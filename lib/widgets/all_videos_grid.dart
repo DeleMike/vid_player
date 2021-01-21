@@ -60,7 +60,6 @@ class AllVideosGrid extends StatelessWidget {
                     splashColor: Theme.of(context).canvasColor,
                     borderRadius: BorderRadius.circular(12),
                     onTap: () {
-                      
                       Navigator.of(context).pushNamed(
                         VideoScreen.routeName,
                         arguments: {
@@ -141,7 +140,8 @@ class AllVideosGrid extends StatelessWidget {
                       splashColor: Theme.of(context).canvasColor,
                       borderRadius: BorderRadius.circular(4),
                       onTap: () {
-                        _openBottomSheet(context, videoList[index].videoData, videoList[index].videoTitle );
+                        _openBottomSheet(context, videoList[index].videoData,
+                            videoList[index].videoTitle);
                         print(
                             'All_Videos_Grid: ${videoList[index].videoTitle} was clicked');
                       },
