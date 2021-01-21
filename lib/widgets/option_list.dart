@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_video_info/flutter_video_info.dart';
-
 import '../screens/video_screen.dart';
 
 class OptionList extends StatelessWidget {
@@ -14,16 +12,13 @@ class OptionList extends StatelessWidget {
   });
 
   void _getVideoInfo() async {
-    final videoInfo = FlutterVideoInfo();
     final video = await videoFile;
     String videoFilePath = video.path;
-    var info = await videoInfo.getVideoInfo(videoFilePath);
-    print('Option_list: info = $info');
+    print('Option_list: video path = $videoFilePath');
   }
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     return SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.all(12),
