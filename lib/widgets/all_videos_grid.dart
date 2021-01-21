@@ -10,6 +10,26 @@ class AllVideosGrid extends StatelessWidget {
   final List<AssetEntity> mediaList;
   final List<Video> videoList;
   AllVideosGrid({@required this.mediaList, @required this.videoList});
+
+  //opens a bottom sheet to get video options
+  void _openBottomSheet(BuildContext ctx) {
+    showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(12.0),
+        ),
+      ),
+      context: ctx,
+      builder: (_) {
+        return GestureDetector(
+          child: Container(),
+          onTap: () {},
+          behavior: HitTestBehavior.opaque,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -109,6 +129,7 @@ class AllVideosGrid extends StatelessWidget {
                       splashColor: Theme.of(context).canvasColor,
                       borderRadius: BorderRadius.circular(4),
                       onTap: () {
+                        _openBottomSheet(context);
                         print(
                             'All_Videos_Grid: ${videoList[index].videoTitle} was clicked');
                       },
@@ -138,9 +159,8 @@ class AllVideosGrid extends StatelessWidget {
                     ),
                     baseColor: Theme.of(context).primaryColor,
                     highlightColor: Theme.of(context).canvasColor,
-                ),
                   ),
-                
+                ),
               );
             }
           },
