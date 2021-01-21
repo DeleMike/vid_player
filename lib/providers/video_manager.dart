@@ -46,6 +46,10 @@ class VideoManager with ChangeNotifier{
         print(
             '\nAllVideosScreen: video duration = ${video.duration.toString()}');
         print('\nAllVideosScreen: video file gotten = ${video.file != null}');
+
+         print('Video Manager: video creation time = ${video.createDateTime}');
+        print('Video Manager: video path = ${video.relativePath}');
+        print('Video Manager: video path = ${video.size}');
       }
      
         _allVideos = allVideos;
