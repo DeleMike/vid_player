@@ -82,6 +82,7 @@ class _VideoScreenState extends State<VideoScreen> {
     super.dispose();
 
     if (_flickManager != null) {
+      _controller.removeListener(() => setState(() {}));
       _flickManager.dispose();
     }
   }
