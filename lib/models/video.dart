@@ -10,10 +10,16 @@ class Video {
   final String videoDuration;
   ///[videoData] video data
   final Future<File> videoData;
+  ///[videoCreationTime] create time for video
+  final String videoCreationTime;
+  ///[videoCreationTime] video location on device
+  final String videoPath; 
 
   Video({
     @required this.videoTitle,
     @required this.videoDuration,
     @required this.videoData,
+    @required this.videoCreationTime,
+    @required this.videoPath,
   });
 }
