@@ -66,7 +66,7 @@ class VideoManager with ChangeNotifier {
   //get formmatted time
   String _getFormattedDate(String dateTime) {
     var time = dateTime.split('.')[0];
-    var formattedTime = time.replaceAll(' ', ', ');
+    var formattedTime = time.replaceAll(' ', 'at ');
     print('Created on: $formattedTime');
 
     return formattedTime;

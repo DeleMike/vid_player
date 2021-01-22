@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:shimmer/shimmer.dart';
@@ -12,10 +10,15 @@ import '../models/video.dart';
 class AllVideosGrid extends StatelessWidget {
   final List<AssetEntity> mediaList;
   final List<Video> videoList;
-  AllVideosGrid({@required this.mediaList, @required this.videoList});
+ // final List<Uint8List> imageList;
+  AllVideosGrid({
+    @required this.mediaList,
+    @required this.videoList,
+   // @required this.imageList,
+  });
 
   //opens a bottom sheet to get video options
-  void _openBottomSheet(BuildContext ctx, Future<File> file, String fileName) {
+  void _openBottomSheet(BuildContext ctx, Video video) {
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -26,8 +29,8 @@ class AllVideosGrid extends StatelessWidget {
       builder: (_) {
         return GestureDetector(
           child: OptionList(
-            videoFile: file,
-            videoTitle: fileName,
+            mVideo: video,
+            //image: image,
           ),
           onTap: () {},
           behavior: HitTestBehavior.opaque,
@@ -140,8 +143,11 @@ class AllVideosGrid extends StatelessWidget {
                       splashColor: Theme.of(context).canvasColor,
                       borderRadius: BorderRadius.circular(4),
                       onTap: () {
-                        _openBottomSheet(context, videoList[index].videoData,
-                            videoList[index].videoTitle);
+                        _openBottomSheet(
+                          context,
+                          videoList[index],
+                          //imageList[index],
+                        );
                         print(
                             'All_Videos_Grid: ${videoList[index].videoTitle} was clicked');
                       },

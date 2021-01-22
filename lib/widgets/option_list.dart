@@ -1,20 +1,60 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+
 import '../screens/video_screen.dart';
+import '../models/video.dart';
 
 class OptionList extends StatelessWidget {
-  final Future<File> videoFile;
-  final String videoTitle;
+  final Video mVideo;
   OptionList({
-    @required this.videoFile,
-    @required this.videoTitle,
+    @required this.mVideo,
   });
 
-  void _getVideoInfo() async {
-    final video = await videoFile;
-    String videoFilePath = video.path;
-    print('Option_list: video path = $videoFilePath');
+  void _getVideoInfo(BuildContext ctx) async {
+    showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(12.0),
+        ),
+      ),
+      context: ctx,
+      builder: (_) {
+        return GestureDetector(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    'Video name: ${mVideo.videoTitle}',
+                    style: Theme.of(ctx).textTheme.headline1,
+                     maxLines: 1,
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    'Created on: ${mVideo.videoCreationTime}',
+                    style: Theme.of(ctx).textTheme.headline1,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    'File location: ${mVideo.videoPath}',
+                    style: Theme.of(ctx).textTheme.headline1,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          onTap: () {},
+          behavior: HitTestBehavior.opaque,
+        );
+      },
+    );
   }
 
   @override
@@ -34,13 +74,13 @@ class OptionList extends StatelessWidget {
               ),
               onPressed: () {
                 Navigator.pop(context);
-                 Navigator.of(context).pushNamed(
-                        VideoScreen.routeName,
-                        arguments: {
-                          'video-title': videoTitle,
-                          'video-file': videoFile,
-                        },
-                      );
+                Navigator.of(context).pushNamed(
+                  VideoScreen.routeName,
+                  arguments: {
+                    'video-title': mVideo.videoTitle,
+                    'video-file': mVideo.videoData,
+                  },
+                );
               },
             ),
             FlatButton(
@@ -51,7 +91,7 @@ class OptionList extends StatelessWidget {
               ),
               onPressed: () {
                 Navigator.pop(context);
-                _getVideoInfo();
+                _getVideoInfo(context);
               },
             ),
             FlatButton(
