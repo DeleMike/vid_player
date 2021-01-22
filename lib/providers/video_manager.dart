@@ -3,16 +3,18 @@ import 'package:photo_manager/photo_manager.dart';
 
 import '../models/video.dart';
 
-///[Video Manager] manages all the video operations 
-class VideoManager with ChangeNotifier{
+///[Video Manager] manages all the video operations
+class VideoManager with ChangeNotifier {
   List<AssetEntity> _allVideos = [];
   List<Video> _modelVideos = [];
   List<Video> _mVideos = [];
 
+  ///return all videos as in raw form
   List<AssetEntity> get allVideos {
     return [..._allVideos];
   }
 
+  ///return all vidoes in [Video] form
   List<Video> get modelVideos {
     return [..._modelVideos];
   }
@@ -25,14 +27,14 @@ class VideoManager with ChangeNotifier{
       List<AssetPathEntity> videos = await PhotoManager.getAssetPathList(
           onlyAll: true, type: RequestType.video);
 
-      print('\nAllVideosScreen: All videos path gotten = $videos');
-      print('\nAllVideosScreen: Value = ${videos[0].assetCount}');
+      print('VideoManager: All videos path gotten = $videos');
+      print('VideoManager: Value = ${videos[0].assetCount}');
 
       //get all the videos
       //using videos[0] because it contains all the videos while other indexes contain grouped videos
       List<AssetEntity> allVideos =
           await videos[0].getAssetListPaged(0, videos[0].assetCount);
-      print('\nAllVideosScreen: All videos extracted = $allVideos');
+      print('VideoManager: All videos extracted = $allVideos');
 
       //package the data gotten
       for (var video in allVideos) {
@@ -40,27 +42,51 @@ class VideoManager with ChangeNotifier{
           videoTitle: video.title,
           videoDuration: _getTime(video.duration),
           videoData: video.file,
+          videoCreationTime: _getFormattedDate(video.createDateTime.toString()),
+          videoPath: _getFormattedPath(video.relativePath),
         ));
 
-        print('\nAllVideosScreen: video title = ${video.title}');
-        print(
-            '\nAllVideosScreen: video duration = ${video.duration.toString()}');
-        print('\nAllVideosScreen: video file gotten = ${video.file != null}');
-
-         print('Video Manager: video creation time = ${video.createDateTime}');
+        print('VideoManager: video title = ${video.title}');
+        print('VideoManager: video duration = ${video.duration.toString()}');
+        print('VideoManager: video file gotten = ${video.file != null}');
+        print('Video Manager: video creation time = ${video.createDateTime}');
         print('Video Manager: video path = ${video.relativePath}');
-        print('Video Manager: video path = ${video.size}');
       }
-     
-        _allVideos = allVideos;
-        _modelVideos = _mVideos;
-      
+
+      _allVideos = allVideos;
+      _modelVideos = _mVideos;
     } else {
       //result failed
       PhotoManager.openSetting();
     }
 
     notifyListeners();
+  }
+
+  //get formmatted time
+  String _getFormattedDate(String dateTime) {
+    var time = dateTime.split('.')[0];
+    var formattedTime = time.replaceAll(' ', ', ');
+    print('Created on: $formattedTime');
+
+    return formattedTime;
+  }
+
+  //get formatted path
+  String _getFormattedPath(String val) {
+    var storedPath = val;
+    if (val.contains('/storage/emulated/0/')) {
+      storedPath =
+          storedPath.replaceAll('/storage/emulated/0/', 'Internal Storage > ');
+    } else {
+      var breaker = val.split('/');
+      var location = breaker[breaker.length - 1];
+      storedPath = 'SD Card > $location';
+    }
+
+    print('VideoManager: Video location = $storedPath');
+
+    return storedPath;
   }
 
   //get a formatted string of the time for each video
@@ -78,15 +104,11 @@ class VideoManager with ChangeNotifier{
     if (inputTime < 60) {
       timeInSecs = inputTime % 60;
       secsStr = '${timeInSecs}s';
-      // print('Log: timeInSecs = $timeInSecs');
-
     } else if (inputTime > 60 && inputTime < 3600) {
       timeInMins = inputTime ~/ 60;
       minsStr = '${timeInMins}m';
-      // print('Log: timeInMins = $timeInMins');
       timeInSecs = inputTime % 60;
       secsStr = '${timeInSecs}s';
-      // print('Log: timeInSecs = $timeInSecs');
     } else {
       timeInHrs = (inputTime ~/ 3600);
       hrStr = '${timeInHrs}h';
@@ -95,12 +117,10 @@ class VideoManager with ChangeNotifier{
       minsStr = '${timeInMins}m';
       timeInSecs = remainder % 60;
       secsStr = '${timeInSecs}s';
-      // print('Log: timeInHrs = $timeInHrs');
-      // print('Log: timeInMins = $timeInMins');
-      // print('Log: timeInSecs = $timeInSecs');
     }
 
     formattedStr = ('$hrStr $minsStr $secsStr').trim();
+    print('VideoManager: Formatted video time = $formattedStr');
 
     return formattedStr;
   }
