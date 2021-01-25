@@ -12,8 +12,10 @@ class Video {
   final Future<File> videoData;
   ///[videoCreationTime] create time for video
   final String videoCreationTime;
-  ///[videoCreationTime] video location on device
-  final String videoPath; 
+  ///[videoPath] video location on device
+  final String videoPath;
+  ///[videoSubtitleFilePath] subtitle for video 
+  final String videoSubtitleFilePath;
 
   Video({
     @required this.videoTitle,
@@ -21,5 +23,6 @@ class Video {
     @required this.videoData,
     @required this.videoCreationTime,
     @required this.videoPath,
+    this.videoSubtitleFilePath = '',
   });
 }
