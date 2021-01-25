@@ -1,8 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:video_player/video_player.dart';
 
 import '../screens/video_screen.dart';
 import '../models/video.dart';
@@ -61,29 +57,6 @@ class OptionList extends StatelessWidget {
     );
   }
 
-  Future<void> _pickSubtitle() async {
-    FilePickerResult result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf', 'srt', 'txt', 'sub', 'sbv'],
-    );
-    if (result != null) {
-      PlatformFile pFile = result.files.first;
-      Future<ClosedCaptionFile> cFile = File(result.files.single.path) as Future<ClosedCaptionFile>;
-      File file = File(result.files.single.path);
-
-      print('Option List: cFile is available = ${cFile != null}');
-      print('Option List: PFile name = ${pFile.name}');
-      print('Option List: PFile bytes = ${pFile.bytes}');
-      print('Option List: PFile size = ${pFile.size}');
-      print('Option List: PFile extension = ${pFile.extension}');
-      print('Option List: PFile path = ${pFile.path}');
-      print('Option List: File path = ${file.path}');
-    } else {
-      // User canceled the picker
-      print('Option List: User canceled the picker');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -129,7 +102,6 @@ class OptionList extends StatelessWidget {
               ),
               onPressed: () {
                 Navigator.pop(context);
-                _pickSubtitle();
               },
             ),
             FlatButton(
