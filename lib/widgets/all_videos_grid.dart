@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../widgets/option_list.dart';
 import '../screens/video_screen.dart';
 import '../models/video.dart';
 
@@ -9,7 +10,35 @@ import '../models/video.dart';
 class AllVideosGrid extends StatelessWidget {
   final List<AssetEntity> mediaList;
   final List<Video> videoList;
-  AllVideosGrid({@required this.mediaList, @required this.videoList});
+ // final List<Uint8List> imageList;
+  AllVideosGrid({
+    @required this.mediaList,
+    @required this.videoList,
+   // @required this.imageList,
+  });
+
+  //opens a bottom sheet to get video options
+  void _openBottomSheet(BuildContext ctx, Video video) {
+    showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(12.0),
+        ),
+      ),
+      context: ctx,
+      builder: (_) {
+        return GestureDetector(
+          child: OptionList(
+            mVideo: video,
+            //image: image,
+          ),
+          onTap: () {},
+          behavior: HitTestBehavior.opaque,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -34,8 +63,13 @@ class AllVideosGrid extends StatelessWidget {
                     splashColor: Theme.of(context).canvasColor,
                     borderRadius: BorderRadius.circular(12),
                     onTap: () {
-                      Navigator.of(context).pushNamed(VideoScreen.routeName,
-                          arguments: videoList[index].videoData);
+                      Navigator.of(context).pushNamed(
+                        VideoScreen.routeName,
+                        arguments: {
+                          'video-title': videoList[index].videoTitle,
+                          'video-file': videoList[index].videoData,
+                        },
+                      );
                     },
                     child: Card(
                       shape: RoundedRectangleBorder(
@@ -109,6 +143,11 @@ class AllVideosGrid extends StatelessWidget {
                       splashColor: Theme.of(context).canvasColor,
                       borderRadius: BorderRadius.circular(4),
                       onTap: () {
+                        _openBottomSheet(
+                          context,
+                          videoList[index],
+                          //imageList[index],
+                        );
                         print(
                             'All_Videos_Grid: ${videoList[index].videoTitle} was clicked');
                       },
@@ -138,9 +177,8 @@ class AllVideosGrid extends StatelessWidget {
                     ),
                     baseColor: Theme.of(context).primaryColor,
                     highlightColor: Theme.of(context).canvasColor,
-                ),
                   ),
-                
+                ),
               );
             }
           },

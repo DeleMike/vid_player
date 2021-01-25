@@ -13,7 +13,9 @@ class VideoScreen extends StatefulWidget {
 }
 
 class _VideoScreenState extends State<VideoScreen> {
+  Map<String, Object> _receivedData;
   Future<File> _videoFile;
+  String _videoTitle;
   VideoPlayerController _controller;
   bool initialized = false;
   FlickManager _flickManager;
@@ -33,8 +35,11 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _videoFile = ModalRoute.of(context).settings.arguments as Future<File>;
+    _receivedData = ModalRoute.of(context).settings.arguments as Map<String, Object>;
+    _videoFile = _receivedData['video-file'];
+    _videoTitle = _receivedData['video-title'];
     print('Video Screen: _videoFile gotten = ${_videoFile != null}');
+    print('Video Screen: _videoTitle gotten = $_videoTitle');
     _initVideo();
   }
 
@@ -42,6 +47,9 @@ class _VideoScreenState extends State<VideoScreen> {
   Widget build(BuildContext context) {
     //final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        title: Text(_videoTitle),
+      ),
       body: _controller.value.initialized
           ? Container(
               child: FlickVideoPlayer(
@@ -74,6 +82,7 @@ class _VideoScreenState extends State<VideoScreen> {
     super.dispose();
 
     if (_flickManager != null) {
+      _controller.removeListener(() => setState(() {}));
       _flickManager.dispose();
     }
   }
