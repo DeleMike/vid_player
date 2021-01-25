@@ -9,6 +9,7 @@ import './screens/video_screen.dart';
 import './helpers/dark_theme_provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(VidPlayerApp());
 }
 

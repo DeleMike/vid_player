@@ -10,6 +10,7 @@ class Styles {
       primarySwatch: Colors.orange,
       primaryColor: isDarkTheme ? Colors.black : Colors.orange,
       accentColor: isDarkTheme ? Colors.black : Colors.orange,
+      splashColor: Colors.grey.withOpacity(0.1),
       canvasColor: isDarkTheme ? Colors.grey[900] : Colors.orange[50],
       brightness: isDarkTheme ? Brightness.dark : Brightness.light,
       fontFamily: 'Play',
@@ -67,7 +68,7 @@ class Styles {
                   fontFamily: 'Play',
                 ),
                 headline1: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   fontFamily: 'Play',
                   fontWeight: FontWeight.normal,
                   color: Colors.black,
